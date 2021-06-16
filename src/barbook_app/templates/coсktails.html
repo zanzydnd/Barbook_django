@@ -1,0 +1,147 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block script %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function pass_gen(len) {
+            chrs = 'abdehkmnpswxzABDEFGHKMNPQRSTWXZ';
+            var str = '';
+            for (var i = 0; i < len; i++) {
+                var pos = Math.floor(Math.random() * chrs.length);
+                str += chrs.substring(pos, pos + 1);
+            }
+            return str;
+        }
+
+        $(function () {
+            //console.log(2);
+            {% comment %} document.querySelector("#search_form").addEventListener("submit", event => {
+                 event.preventDefault();
+
+                 const form = event.target;
+                 const formData = new FormData(form);
+
+                 for (let input of formData.entries()) {
+                     console.log(input[0], input[1]); //Выведет в консоль всю форму в виде "КЛЮЧ ЗНАЧЕНИЕ"
+                 }
+             });{% endcomment %}
+            $("#search_form").submit(function (event) {
+                event.preventDefault();
+                var search_str = $("#searchBar").val();
+                var tags = [];
+                var i = 0;
+                $("select option:selected").each(function (index) {
+                        if ($(this).val() === "") {
+                        } else {
+                            tags[i] = $(this).val();
+                            i++;
+                        }
+                    }
+                );
+                //console.log(tags);
+                $.ajax({
+                    data: {
+                        search: search_str,
+                        tags: JSON.stringify(tags),
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    type: "POST",
+                    url: {% url 'search' %},
+                    dataType: "json",
+                    success: function (result, xr, aa) {
+                        $("#vstavka").empty();
+                        $("#done").hide();
+                        $("#pag").hide();
+                        for (i = 0; i < result.length; i++) {
+                            cockt = result[i];
+                            id = cockt['pk'];
+                            console.log(id)
+                            fields_cockt = cockt['fields'];
+                            small_img = fields_cockt['small_img'];
+                            console.log(small_img);
+                            name_cockt = fields_cockt['name'];
+                            console.log(name_cockt);
+
+                            $("#vstavka").append(
+                                '<div class="cocktail__item">\n' +
+                                '                        <div class="cocktail__item-inner">\n' +
+                                '                            <div class="cocktail__img">\n' +
+                                '                                <img src="/img_source/' + small_img + '" class="cocktails__photo" alt=""/>\n' +
+                                '                            </div>\n' +
+                                '                            <div class="cocktails__content">\n' +
+                                '                                <h4 class="cocktail__name">' + name_cockt + '</h4>\n' +
+                                '                                <a class="readmore" href="/cocktails/' + id + '/' + '">Read more</a>\n' +
+                                '                            </div>\n' +
+                                '                        </div>\n' +
+                                '                    </div>'
+                            );
+                        }
+                    },
+                    error: function (result) {
+                        $("#vstavka").empty();
+                        $("#pg").show();
+                        $("#done").show();
+                    }
+                });
+            })
+        });
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="cocktails">
+        <div class="container">
+            <div class="search__system">
+                <form id="search_form" class="filter">
+                    <input type="search" id="searchBar" class="search__field" placeholder="Search...">
+                    {% for key, values in tags.items %}
+                        <select name="filter" id="filter_{{ key }}" class="filter__item">
+                            <option value="">{{ key }}</option>
+                            {% for tag in values %}
+                                <option value="{{ tag }}">{{ tag }}</option>
+                            {% endfor %}
+                        </select>
+                    {% endfor %}
+                    <button class="filter__btn search__btn" type="submit">Применить</button>
+                </form>
+
+            </div>
+
+            <div class="cocktails__inner" id="vstavka">
+
+            </div>
+
+            <div class="cocktails__inner" id="done">
+
+                {% for cocktail in object_list %}
+                    <div class="cocktail__item">
+                        <div class="cocktail__item-inner">
+                            <div class="cocktail__img">
+                                <img src="{{ cocktail.small_img.url }}" class="cocktails__photo" alt=""/>
+                            </div>
+                            <div class="cocktails__content">
+                                <h4 class="cocktail__name">{{ cocktail.name }}</h4>
+                                <a class="readmore" href="{% url 'cocktail_page' cocktail.id %}">Read more</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="pagination" id="pag">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+            </span>
+                <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

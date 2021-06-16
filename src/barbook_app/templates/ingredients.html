@@ -1,0 +1,23 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="coctail__info">
+    <div class="container">
+        <div class="coctail__inner ingred__inner">
+
+            <div class="ingred__item">
+                <div class="ingred__block-photo">
+                    {% for ing in object_list %}
+                    <a href="{% url 'ingredient_page' ing.id %}" class="ingred__block-item">
+                        <img src="{{  ing.small_img.url }}" class="ingred-img" alt="">
+                        <div class="ingred__name">{{ ing.name}}</div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

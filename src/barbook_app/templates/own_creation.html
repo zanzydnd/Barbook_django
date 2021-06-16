@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="{% static 'style_creation.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{% static 'js/popping_items.js' %}"></script>
+    <script>
+        window.onload = load_page;
+
+    </script>
+</head>
+
+<body>
+<form class="create_cocktail_cont" enctype="multipart/form-data" action="" id="constructor">
+    <div class="cabinet__name-surname create__name-surname">
+        {% csrf_token %}
+        <input type="hidden" name="user_id" id="user_id" value="{{ user.id }}">
+        <div class="cabinet__name">
+            <label for="name" class="cabinet__name-label">Название</label>
+            <input type="text" required name="name" id="name" class="cabinet__name-field" v-model="cocktail.name">
+        </div>
+        <div class="create__input__photo">
+            <div class="img__big">
+                <label for="image_big">Фото для главной страницы</label>
+                <input type="file" required id="image_big" name="bigPicture" accept="image/*">
+            </div>
+            <div class="img__small">
+                <label for="image_small">Фото маленькое</label>
+                <input type="file" required id="image_small" name="smallPicture" accept="image/*">
+            </div>
+        </div>
+    </div>
+
+    <div class="cabinet__info create__cabinet-info">
+        <label for="cocktail_info" class="cabinet__text-label">Info</label>
+        <textarea name="cocktail_info" required id="cocktail_info" class="cabinet__text create__cabinet-text"
+                  rows="10"></textarea>
+    </div>
+
+    <div class="ingred__item create__ingred-item" id="ingredient_append">
+    </div>
+
+    <div class="ingred__item create__ingred-item" id="bartool_append">
+    </div>
+
+    <div class="recipe">
+        <h4 class="recipe__title">Распишите ваш рецепт по шагам</h4>
+
+        <div class="button_change">
+            <button name="plus_inp" id="plus_inp" class="plus_inp" type="button" onclick="new_recipe_step_field()">+
+            </button>
+            <button name="min_inp" id="min_inp" type="button" class="plus_minus" onclick="delete_recipe_step_field()">
+                -
+            </button>
+        </div>
+
+        <div class="recipe__block" id="step_append">
+            <input class="log recipe__text" type="text" name="1" id="step1" required>
+        </div>
+    </div>
+
+
+    <div class="create">
+        <button class="create__btn" name="button_sub" id="button_sub" type="button">Создать</button>
+    </div>
+
+</form>
+
+<script>
+    $("#button_sub").on("click", function (event) {
+        event.preventDefault();
+        popping_from_form();
+    });
+</script>
+</body>
+</html>

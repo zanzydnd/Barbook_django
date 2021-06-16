@@ -1,0 +1,70 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="contests">
+        <div class="container">
+            <div class="contests__header">
+                <div class="contest__line"></div>
+                <div class="contests__header__text">
+                    Мероприятия
+                </div>
+                <div class="contest__line"></div>
+            </div>
+            <div class="blog">
+                {% for object in object_list %}
+
+                    <div class="blog__item">
+                        <div class="blog__head">
+                            <a href="#" data-toggle="modal" data-target="#i{{ object.id }}">
+                                <img class="blog__photo" src="{{ object.img.url }}" alt="">
+                            </a>
+                        </div>
+                        <div class="blog__content">
+                            <a href="#" class="blog__title" data-toggle="modal"
+                               data-target="i{{ object.id }}">{{ object.name }}</a>
+                        </div>
+                    </div>
+
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% for object in object_list %}
+        <div class="modal fade" id="i{{ object.id }}" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLongTitle "
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-bg">
+                            <img src="{{ object.img.url }}" alt="" class="modal__img">
+                        </div>
+
+                        <div class="modal__content">
+                            <div class="modal__title blog__title">{{ object.name }}</div>
+                            <div class="modal__stat">
+                            <span class="blog__stat-item modal__stat-item"><i class="fa fa-calendar"
+                                                                              aria-hidden="true"></i>{{ object.date }}</span>
+                            </div>
+
+                            <div class="modal__text blog__text">{{ object.info }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,64 @@
+version: '3'
+
+services:
+
+  nginx:
+    image: registry.gitlab.com/dane4kq1/kozlov_itis_python2k_project_11900/barbook-nginx:latest
+    build:
+      context: .
+      dockerfile: deploy/nginx/Dockerfile
+    ports:
+      - 8000:8000
+    restart: always
+    depends_on:
+      - app
+    volumes:
+      - static:/static
+
+  app: &app
+    image: registry.gitlab.com/dane4kq1/kozlov_itis_python2k_project_11900/barbook:latest
+    build:
+      context: .
+      dockerfile: deploy/python/Dockerfile
+    restart: always
+    expose:
+      - 8000
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      DB_HOST: postgres
+      REDIS_CONNECTION: redis://redis:6379/0
+    volumes:
+      - static:/static
+
+  celery:
+    <<: *app
+    working_dir: /app/src
+    command: celery -A barbook_project worker -l INFO
+    ports: []
+    volumes: []
+
+  celey-beat:
+    <<: *app
+    working_dir: /app/src
+    command: celery -A barbook_project beat -l INFO
+    ports: []
+    volumes: []
+
+
+  postgres:
+    image: postgres:11.1-alpine
+    environment:
+      POSTGRES_DB: barbook_django
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    volumes:
+      - db:/var/lib/postgresql/data
+
+  redis:
+    image: redis:6-alpine
+
+volumes:
+  db:
+  static:

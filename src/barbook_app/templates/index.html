@@ -1,0 +1,79 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="slide">
+    <div class="intro intro1">
+        <div class="container">
+            <div class="slider__inner">
+                <div class="intro__inner1">
+                    <h1 class="intro__title1">BarBook</h1>
+                </div>
+                <div class="intro__line-helper">
+                    <div class="intro__line"></div>
+                </div>
+                <div class="intro__inner2">
+                    <h1 class="intro__title2">BEST SERVICE FOR BARTENDERS</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="intro intro2">
+        <div class="container">
+            <div class="slider__inner">
+                <div class="intro__inner1">
+                    <h1 class="intro__title1">BarBook</h1>
+                </div>
+                <div class="intro__line-helper">
+                    <div class="intro__line"></div>
+                </div>
+                <div class="intro__inner2">
+                    <h1 class="intro__title2">BEST SERVICE FOR BARTENDERS</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="aboutUs">
+    <div class="container">
+        <div class="aboutUs__inner">
+
+            <div class="aboutUs__col">
+                <div class="aboutUs__inner1">
+                    <h4 class="aboutUs__subtitle">Shortly about us</h4>
+                </div>
+                <div class="aboutUs__inner2">
+                    <h1 class="aboutUs__title">Our cocktail menu is inspired by both vintage and modern recipes</h1>
+                </div>
+                <div class="aboutUs__inner3">
+                    <h3 class="aboutUs__text">
+                        our service was created in order to make life easier for bartenders
+                        in search of recipes for new and bright cocktails, and anyone can pick
+                        up something new for themselves
+                    </h3>
+                </div>
+            </div>
+
+            <div class="aboutUs__col">
+                <div class="aboutUs__img">
+                    <img src="{% static 'img/home-1-welcome.png' %}" alt="">
+                </div>
+            </div>
+
+            <div class="aboutUs__col">
+                <div class="aboutUs__img">
+                    <img class="aboutUs__photo" src="{% static 'img/img_banner.jpg' %}" alt="">
+                </div>
+                <div class="aboutUs__banner">
+                    <h1 class="banner__title">Some info</h1>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

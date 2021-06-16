@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Sancreek&family=Tinos&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Registration</title>
+</head>
+<body>
+
+<div class="registration">
+    <div class="registration__container">
+
+        <h1 class="registration__title">Registration</h1>
+        <form method="post" enctype="multipart/form-data" action="">
+            {% csrf_token %}
+            {% if form.errors %}
+                <b>Проверьте следующие поля:</b>
+                <ul>
+                    {% for field, error in form.errors.items %}
+                        {{ field }}: {{ error }}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <div class="group">
+                <label class="registration__label" for="">Email</label>
+                <input class="registration__input" type="email" id="email" name="email" required>
+                {% if email_error %}
+                    <a style="color: red"> {{ email_error }}</a>
+                {% endif %}
+            </div>
+
+            <div class="group">
+                <label class="registration__label" for="">Username</label>
+                <input class="registration__input" id="username" type="text" name="username" pattern="[a-zA-Z0-9]+"
+                       minlength="4"
+                       required>
+                {% if username_error %}
+                    <a style="color: red"> {{ username_error }}</a>
+                {% endif %}
+            </div>
+
+            <div class="group">
+                <label class="registration__label" for="">Name</label>
+                <input class="registration__input" type="text" id="name" name="name"
+                       minlength="4" maxlength="10" required>
+            </div>
+
+            <div class="group">
+                <label class="registration__label" for="">Second Name</label>
+                <input class="registration__input" type="text" id="second_name" name="second_name"
+                       minlength="4" maxlength="10">
+            </div>
+
+            <div class="group">
+                <label class="registration__label" for="">Password</label>
+                <input class="registration__input" id="password" name="password" type="password" minlength="4"
+                       required>
+            </div>
+
+            <div class="group">
+                <input type="radio" id="contactChoice1"
+                       name="role" value="любитель">
+                <label for="contactChoice1">Любитель</label>
+
+                <input type="radio" id="contactChoice2"
+                       name="role" value="професионал">
+                <label for="contactChoice2">Професионал</label>
+            </div>
+
+            <div class="group">
+                <label for="image">Аватарка</label>
+                <input type="file" id="img" name="img" accept="image/*">
+            </div>
+
+            <div class="group">
+                <button class="registration__button" type="submit">Register</button>
+            </div>
+
+            <a href="{% url 'auth' %}">Уже зарегистрированы?</a>
+        </form>
+    </div>
+</div>
+
+
+</body>
+</html>

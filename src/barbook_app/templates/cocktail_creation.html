@@ -1,0 +1,625 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="{% static 'style_creation.css' %}">
+
+</head>
+
+<body>
+
+<form class="create_cocktail_cont" enctype="multipart/form-data" action="" id="constructor">
+    <div class="cabinet__name-surname create__name-surname">
+        <div class="cabinet__name">
+            <label for="name" class="cabinet__name-label">Название</label>
+            <input type="text" required name="name" id="name" class="cabinet__name-field" v-model="cocktail.name">
+        </div>
+        <div class="create__input__photo">
+
+            <div class="img__big">
+                <label for="image_big">Фото для главной страницы</label>
+                <input type="file" required ref="bigPicture" id="image_big" name="bigPicture" accept="image/*"
+                       v-on:change="handleFileUploadBig">
+            </div>
+            <div class="img__small">
+                <label for="image_small">Фото маленькое</label>
+                <input type="file" required id="image_small" ref="smallPicture" name="smallPicture" accept="image/*"
+                       v-on:change="handleFileUploadSmall">
+            </div>
+
+        </div>
+    </div>
+
+    <div class="cabinet__info create__cabinet-info">
+        <label for="text" class="cabinet__text-label">Info</label>
+        <textarea name="text" name="text" required id="text" class="cabinet__text create__cabinet-text"
+                  rows="10" v-model="cocktail.info"></textarea>
+    </div>
+    <div class="search__sys">
+        <search v-bind:ingredients="dataSearch.ingredients" v-bind:bartools="dataSearch.bartools"
+                v-bind:cocktail="cocktail" v-bind:filters="filters"></search>
+    </div>
+    <div class="recipe">
+        <h4 class="recipe__title">Распишите ваш рецепт по шагам</h4>
+
+        <div>
+            <recipe v-bind:recipe="cocktail.recipe"></recipe>
+        </div>
+
+
+        <div name="input_plus" id="input_plus">
+        </div>
+        <input hidden value="" name="user_id">
+    </div>
+    <div class="recipe">
+        <h4 class="recipe__title">Укажите теги для вашего коктейля</h4>
+        <div class="filters">
+            <tag v-bind:selecttags="cocktail.tags" v-bind:tags="tags"></tag>
+        </div>
+    </div>
+    <div class="create">
+        <button class="create__btn" name="button_l" id="button_l" type="button" v-on:click="clickSubmit">Создать
+        </button>
+    </div>
+</form>
+
+</body>
+
+<script src="https://unpkg.com/vue@3.0.5/dist/vue.global.js"></script>
+<script>
+    let constructor = Vue.createApp({
+        data: () => ({
+            dataSearch: {
+                ingredients: [
+                    {
+                        name: 'Водка',
+                        img: 'img/ingredients/Homemade-beet-vodka.jpg',
+                        taste: 'Сладкие',
+                        base: 'Анис',
+                        degree: 'Крепкие',
+                    },
+                    {
+                        name: 'Пиво',
+                        img: 'img/ingredients/Homemade-beet-vodka.jpg',
+                        taste: 'Кислые',
+                        base: 'Агава',
+                        degree: 'Крепкие',
+                    },
+                    {
+                        name: 'Кальвадос',
+                        img: 'img/ingredients/Homemade-beet-vodka.jpg',
+                        taste: 'Сладкие',
+                        base: 'Анис',
+                        degree: 'Слабоалкогольные',
+                    },
+                    {
+                        name: 'Настойка',
+                        img: 'img/ingredients/Homemade-beet-vodka.jpg',
+                        taste: 'Кислые',
+                        base: 'Анис',
+                        degree: 'Слабоалкогольные',
+                    },
+                    {
+                        name: 'Заливка',
+                        img: 'img/ingredients/Homemade-beet-vodka.jpg',
+                        taste: 'Сладкие',
+                        base: 'Агава',
+                        degree: 'Безалкогольные',
+                    },
+                    {
+                        name: 'Пивооо',
+                        img: 'img/ingredients/Homemade-beet-vodka.jpg',
+                        taste: 'Сладкие',
+                        base: 'Агава',
+                        degree: 'Слабоалкогольные',
+                    },
+                ],
+                bartools: [
+                    {
+                        name: 'Ложка',
+                        img: 'img/ingredients/Homemade-beet-vodka.jpg',
+                    },
+                    {
+                        name: 'Вилка',
+                        img: 'img/ingredients/Homemade-beet-vodka.jpg',
+                    }
+                ],
+            },
+            tags: [
+                {
+                    name: 'Tag1',
+                    tag_items: [
+                        {
+                            name: 'Крепкие'
+                        },
+                        {
+                            name: 'Безалкагольные'
+                        }
+                    ]
+                },
+                {
+                    name: 'Tag2',
+                    tag_items: [
+                        {
+                            name: 'Крепк'
+                        },
+                        {
+                            name: 'Безалкагольные'
+                        }
+                    ]
+                },
+                {
+                    name: 'Tag3',
+                    tag_items: [
+                        {
+                            name: 'Крепкие'
+                        },
+                        {
+                            name: 'Безалкагольные'
+                        }
+                    ]
+                },
+            ],
+            filters: [
+                {
+                    'filter': 'Градус',
+                    'items': [
+                        'Безалкогольные', 'Слабоалкогольные', 'Крепкие'
+                    ],
+                },
+                {
+                    'filter': 'Основа',
+                    'items': [
+                        'Абрикосы', 'Агава', 'Анис'
+                    ]
+                },
+                {
+                    'filter': 'Вкус',
+                    'items': [
+                        'Горькие', 'Кислые', 'Сладкие'
+                    ]
+                }
+            ],
+            smallPhoto: '',
+            bigPhoto: '',
+            cocktail: {
+                name: '',
+                info: '',
+                files: {
+                    smallPhoto: '',
+                    bigPhoto: '',
+                },
+                ingredients: [],
+                bartools: [],
+                recipe: [
+                    {
+                        text: '1.'
+                    },
+                ],
+                tags: [],
+            },
+        }),
+        methods: {
+            clickSubmit() {
+                // Это то как я вижу отправку на сервак
+                // возможно где-то обосрался, так что если что...
+
+                // let formData = new FormData();
+                // formData.append('fileSmall', this.cocktail.files.smallPhoto);
+                // formData.append('fileBig', this.cocktail.files.bigPhoto);
+                //
+                // fetch('api/Photo', {
+                //     method: 'post',
+                //     headers: {
+                //         'Content-Type': 'multipart/form-data'
+                //     },
+                //     body: formData,
+                // })
+                //     .then(response => response)
+                //     .then(result => console.log(result));
+                // fetch('api/Pip', {
+                //     method: 'post',
+                //     headers: {
+                //         'Content-Type': 'application/json'
+                //     },
+                //     body: JSON.stringify(this.cocktail),
+                // })
+                //     .then(response => response)
+                //     .then(result => console.log(result));
+                console.log(JSON.stringify(this.cocktail));
+            },
+            handleFileUploadBig() {
+                this.cocktail.files.bigPhoto = this.$refs.bigPicture.files[0];
+            },
+            handleFileUploadSmall() {
+                this.cocktail.files.smallPhoto = this.$refs.smallPicture.files[0];
+            }
+        },
+        mounted() {
+            //Заготовленные данные
+            // тоже приблизительно нужно на реальных данных поработать
+
+            // fetch('api/searchBlock', {
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     }
+            // })
+            //     .then(response => {
+            //         this.dataSearch = response;
+            //     });
+            //
+            // fetch('api/tags', {
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     }
+            // }).then(response => response.json())
+            //     .then(result => {
+            //         this.tags = result;
+            //     });
+
+            this.tags.forEach(item => {
+                this.cocktail.tags.push('Выбрать');
+            });
+        }
+    });
+    constructor.component('tag', {
+        props: ['selecttags', 'tags'],
+        data: () => ({
+            select: [],
+            selectTag: [],
+        }),
+        template: `
+          <select name="alco" class="filter__item filter__item--search" v-model="selecttags[item]"
+                  v-for="(tag,item) in tags">
+          <option :value="selecttags[item]">{{ selecttags[item] }}</option>
+          <option name="types[]" v-bind:key="i" v-bind:value="tag_i.name"
+                  v-for="(tag_i,i) in tag.tag_items">{{ tag_i.name }}
+          </option>
+          </select>
+        `,
+        methods: {
+            clickTagSelect(i) {
+                console.log(this.selectTag);
+            },
+            clickSelectTag(i) {
+                this.selectTag = i;
+                return true
+            },
+            clickBtn() {
+                console.log(this.selectTag);
+            },
+        },
+        mounted() {
+        }
+    });
+    constructor.component('search', {
+        props: ['ingredients', 'bartools', 'cocktail', 'filters'],
+        data: () => ({
+            searchIngredients: [],
+            bartoolsMl: [],
+            ingredientsMl: [],
+            currentChange: -1,
+            checkedBartools: [],
+            inputSearch: '',
+            allIngredients: [],
+            activeSearchItems: false,
+            filterDegree: 'Любой',
+            filterTaste: 'Любой',
+            filterBase: 'Любой',
+            inputValue: [],
+            inputIngred: [],
+        }),
+        template: `
+
+          <div class="cabinet__info create__cabinet-info create__cabinet-search">
+          <label for="text" class="cabinet__text-label">Search</label>
+          <div class="search__block">
+            <div class="input__search">
+              <input type="search" class="search__ing" placeholder="Введи ингредиент" v-model="inputSearch"
+                     v-on:focus="clickOpen" v-close-outside="clickClose">
+              <ul class="search__items" v-bind:class="{'active-search':activeSearchItems}">
+                <a href="#" class="search__item" v-on:click.prevent="clickSearchIngred($event.target.textContent)"
+                   v-for="(ingredient,i) in searchIngredientsFunc">{{ ingredient.name }}</a>
+              </ul>
+            </div>
+            <button class="search__btn" type="button" v-on:click="clickSearch">Search</button>
+          </div>
+
+          <div class="search__block search-option">
+            <select name="alco" class="filter__item filter__item--search" v-model="filterDegree">
+              <option value="Любой">Любой</option>
+              <option v-for="item in filters[0].items">{{ item }}
+              </option>
+            </select>
+
+            <select name="alco" class="filter__item filter__item--search" v-model="filterBase">
+              <option value="Любой">Любой</option>
+              <option v-for="item in filters[1].items">{{ item }}</option>
+            </select>
+
+            <select name="alco" class="filter__item filter__item--search" v-model="filterTaste">
+              <option value="Любой">Любой</option>
+              <option v-for="item in filters[2].items">{{ item }}</option>
+            </select>
+
+          </div>
+          </div>
+
+          <div class="ingred__item create__ingred-item">
+
+          <div class="ingred__block-photo create__ingred-photo--block" v-for="(ing,i) in allIngredients">
+            <div class="ingred__block-item" v-bind:ref="valueIngred">
+              <a href="#" class="link_ingred">
+                <img v-bind:src="ing.img" class="ingred-img" alt="">
+                <div class="ingred__name create__ingred-name">{{ ing.name }}</div>
+              </a>
+              <div class="check__ing-block">
+                <input type="checkbox" value="" name="ing" class="ingredient_check"
+                       v-bind:checked="checkedIngred(i)"
+                       v-on:click="checkIngredient(i)">
+                <input class="ing__count" placeholder="ml" v-bind:value="ingredientCount(i)"
+                       v-on:blur="pushCocktailIngred($event.target.value,i)">
+              </div>
+            </div>
+          </div>
+
+          </div>
+
+          <div class="ingred__item create__ingred-item">
+
+          <div class="ingred__block-photo create__ingred-photo--block" v-for="(bartool,i) in bartools">
+            <div class="ingred__block-item">
+              <a href="#" class="link_ingred">
+                <img v-bind:src="bartool.img" class="ingred-img" alt="">
+                <div class="ingred__name create__ingred-name">{{ bartool.name }}</div>
+              </a>
+              <div class="check__ing-block">
+                <input type="checkbox" value="" name="ing" class="ingredient_check"
+                       v-bind:checked="checkedBartool(i)"
+                       v-on:click="checkBartool(i)">
+                <input type="text" class="ing__count" placeholder="шт"
+                       v-on:input="inputCountBartool($event.target.value,i)"
+                       v-on:blur="pushCocktailBartool($event.target.value,i)">
+              </div>
+            </div>
+          </div>
+
+          </div>
+        `,
+        computed: {
+            searchIngredientsFunc() {
+                if (this.inputSearch.length > 0) {
+                    return this.searchIngredients.filter(
+                        item => item.name.includes(this.inputSearch));
+                } else {
+                    return this.searchIngredients;
+                }
+            },
+        },
+        methods: {
+            valueIngred(el) {
+                if (el) {
+                    this.inputValue.push(el);
+                }
+            },
+            ingredientCount(i) {
+                let count = '';
+                this.cocktail.ingredients.forEach(item => {
+                    if (item.ingredient.name === this.allIngredients[i].name) {
+                        count = item.count;
+                    }
+                });
+                return count;
+            },
+            clickSearch() {
+                let searchIndicators = {
+                    indicators: new Map(),
+                }
+
+                if (this.filterDegree !== 'Любой') {
+                    searchIndicators.indicators.set(`degree`, `${this.filterDegree}`);
+                } else {
+                    searchIndicators.indicators.set(`degree`, '');
+                }
+                if (this.filterBase !== 'Любой') {
+                    searchIndicators.indicators.set('base', `${this.filterBase}`);
+                } else {
+                    searchIndicators.indicators.set(`base`, '');
+                }
+
+                if (this.filterTaste !== 'Любой') {
+                    searchIndicators.indicators.set(`taste`, `${this.filterTaste}`);
+                } else {
+                    searchIndicators.indicators.set(`taste`, '');
+                }
+
+                this.allIngredients = [];
+                this.ingredients.forEach(item => {
+                    let flag = true;
+                    searchIndicators.indicators.forEach((value, key) => {
+                        if (value !== '' && value !== item[`${key}`] && this.inputSearch === '') {
+                            flag = false;
+                        } else if (!item.name.includes(this.inputSearch) || (value !== '' && value !== item[`${key}`])) {
+                            console.log(item.name);
+                            flag = false;
+                        }
+                    });
+                    if (flag === false) {
+                        flag = true
+                    } else {
+                        this.allIngredients.push(item);
+                    }
+                });
+
+            },
+            clickOpen() {
+                this.activeSearchItems = true;
+            },
+            clickClose() {
+                this.activeSearchItems = false;
+            },
+            clickSearchIngred(searchIngred) {
+                this.activeSearchItems = false;
+                this.inputSearch = searchIngred;
+            },
+            checkedBartool(i) {
+                return this.checkedBartools[i] !== false;
+            },
+            checkedIngred(i) {
+                let flag = false;
+                this.cocktail.ingredients.forEach(item => {
+                    if (item.ingredient.name === this.allIngredients[i].name) {
+                        flag = true;
+                    }
+                });
+                return flag;
+            },
+            inputCountBartool(count, i) {
+                this.checkedBartools[i] = count.trim().length > 0;
+            },
+            pushCocktailIngred(count, i) {
+                let find = false;
+                if (count.trim().length > 0) {
+                    this.cocktail.ingredients.forEach((item) => {
+                        if (this.allIngredients[i].name === item.ingredient.name) {
+                            item.count = count;
+                            find = true;
+                        }
+                    });
+
+                    if (find === false) {
+                        this.cocktail.ingredients.push({
+                            'ingredient': this.allIngredients[i],
+                            'count': count,
+                        });
+                    }
+                } else {
+                    this.cocktail.ingredients.forEach((item, j) => {
+                        if (item.ingredient.name === this.allIngredients[i].name) {
+                            this.cocktail.ingredients.splice(j, 1);
+                        }
+                    });
+                }
+                console.log(this.cocktail.ingredients);
+            },
+            pushCocktailBartool(count, i) {
+                let find = false;
+                if (count.trim().length > 0) {
+                    for (let j = 0; j < this.cocktail.bartools.length; j++) {
+                        if (this.bartools[i] === this.cocktail.bartools[j].bartool) {
+                            this.cocktail.bartools[j].count = count;
+                            find = true;
+                        }
+                        if (find === true) {
+                            this.checkedBartools[i] = true;
+                            break;
+                        }
+                    }
+                    if (find === false) {
+                        this.cocktail.bartools.push({
+                            'bartool': this.bartools[i],
+                            'count': count,
+                        });
+                        find = false;
+                        console.log(this.checkedBartools);
+                        this.checkedBartools[i] = true;
+                    }
+                } else {
+                    this.cocktail.bartools.forEach((item, j) => {
+                        if (item.bartool === this.bartools[i]) {
+                            this.cocktail.bartools.splice(j, 1);
+                            this.checkedBartools[i] = false;
+                        }
+                    });
+                }
+                console.log(this.cocktail.bartools);
+            },
+            checkIngredient(i) {
+                let change = true;
+                this.cocktail.ingredients.forEach((item, j) => {
+                    if (item.ingredient.name === this.allIngredients[i].name) {
+                        this.cocktail.ingredients.splice(j, 1);
+                        change = false;
+                    }
+                });
+                if (change === true) {
+                    this.cocktail.ingredients.push({
+                        'ingredient': this.allIngredients[i],
+                        'count': 0
+                    });
+                }
+            },
+            checkBartool(i) {
+                let change = false;
+                this.cocktail.bartools.forEach((item, j) => {
+                    if (item.bartool === this.bartools[i]) {
+                        this.cocktail.bartools.splice(j, 1);
+                        change = true;
+                        this.checkedBartools[i] = false;
+                    }
+                });
+                if (!change === true) {
+                    this.cocktail.bartools.push({
+                        'bartool': this.bartools[i],
+                        'count': 0
+                    });
+                    this.checkedBartools[i] = true;
+                }
+            },
+        },
+        mounted() {
+            this.allIngredients = this.ingredients;
+
+            this.bartools.forEach(item => {
+                this.checkedBartools.push(false);
+            });
+            this.searchIngredients = this.ingredients;
+        },
+    });
+    constructor.directive('close-outside', {
+        updated(el, binding) {
+            el.addEventListener('click', e => e.stopPropagation());
+            document.body.addEventListener('click', binding.value);
+        },
+    });
+    constructor.component('recipe', {
+        props: ['recipe'],
+        data: () => ({
+            inputText: '',
+        }),
+        template:
+                `
+                  <div class="button_change">
+                  <button name="plus_inp" id="plus_inp" class="plus_inp" type="button" v-on:click="btnPlus">+</button>
+                  <button name="min_inp" id="min_inp" type="button" class="plus_minus" v-on:click="btnMinus">-</button>
+                  </div>
+
+                  <div class="recipe__block">
+                  <div v-for="(step,i) in recipe">
+                    <input class="log recipe__text" type="text" name="1" v-model.trim="step.text"
+                           ref="lastStep"
+                           required>
+                  </div>
+                  </div>
+                `,
+        methods: {
+            btnPlus() {
+                this.recipe.push({text: `${this.recipe.length + 1}.`});
+            },
+            btnMinus() {
+                if (this.recipe.length !== 1) {
+                    this.recipe.pop();
+                }
+            },
+        },
+        watch: {}
+    });
+    constructor.mount('#constructor');
+</script>
+</html>

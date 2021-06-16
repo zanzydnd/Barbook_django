@@ -1,0 +1,333 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block script %}
+    <script>
+        $(function () {
+            $('#like_button').click(function (event) {
+                event.preventDefault();
+                console.log(111)
+                console.log(222);
+                var cockt_id = {{ object.id }};
+                console.log(cockt_id);
+                var data = {
+                    "user_id": {{ user.id }},
+                    "cockt_id": cockt_id,
+                    "csrfmiddlewaretoken": '{{ csrf_token }}',
+                };
+                console.log(data);
+                $.ajax({
+                    type: "POST",
+                    url: '{% url 'like' %}',
+                    dataType: 'json',
+                    data: data,
+                    success: function (result) {
+                        console.log(result);
+                        console.log(result['num_of_likes']);
+                        $("#count_likes").html(result['num_of_likes']);
+                    }
+                });
+            });
+            $('#favourite').on('click', function (event) {
+                event.preventDefault();
+                data = {
+                    'user_id': {{ user.id }},
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                };
+                console.log(data);
+                $.ajax({
+                    type: "POST",
+                    url: '{% url 'favorite' object.id %}',
+                    dataType: 'json',
+                    data: data,
+                    success: function (result) {
+                    }
+                });
+            });
+            $("#delete_cocktail").on("click", function (event) {
+                event.preventDefault();
+                document.cookie = "csrftoken={{ csrf_token }}";
+                var myHeaders = new Headers();
+                myHeaders.append("X-CSRFToken", '{{ csrf_token }}');
+                var id = $("#cocktail_id").val();
+                data = {csrfmiddlewaretoken: '{{ csrf_token }}'}
+                $.ajax({
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                    },
+                    type: "DELETE",
+                    url: "/api/cocktails/" + id,
+                    dataType: "json",
+                    data: data,
+                    success: function (result) {
+                        window.location.replace("http://localhost:8000/cocktails/");
+                    }
+                })
+            })
+            $("#sub_changes").on("click", function (event) {
+                event.preventDefault();
+                var data = {
+                    name: $("#cockt_name").val(),
+                    description: $("#cocktail_info").val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                };
+                document.cookie = "csrftoken={{ csrf_token }}";
+                var myHeaders = new Headers();
+                myHeaders.append("X-CSRFToken", '{{ csrf_token }}');
+                var id = $("#cocktail_id").val();
+                $.ajax({
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                    },
+                    type: "PUT",
+                    url: "/api/cocktails/" + id + "/",
+                    data: data,
+                    dataType: "json",
+                    error: function () {
+                        window.location.replace("http://localhost:8000/cocktails/" + id);
+                    },
+                    success: function (result) {
+                        window.location.replace("http://localhost:8000/cocktails/" + id);
+                    }
+                });
+            })
+            $("#comment_submit_button").on("click", function (event) {
+                event.preventDefault();
+                data = {
+                    'user_id': {{ user.id }},
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'text': $("#comment_text").val(),
+                    'cocktail_id': {{ object.id }}
+                }
+                $.ajax({
+                    type: "POST",
+                    url: '{% url 'new_comment'%}',
+                    dataType: 'json',
+                    data: data,
+                    success: function (result) {
+                        $(this).val("");
+                        $(".comments__list").append(
+                            '<div class="comments__list-item">\n' +
+                            '                                        <div class="comments__avatar">\n' +
+                            '                                            <img src="' + result["img_url"] + '" alt="" class="comments__avatar-img">\n' +
+                            '                                        </div>\n' +
+                            '                                        <div class="comments__info">\n' +
+                            '                                            <div class="comment__head">\n' +
+                            '                                                <div class="comments__name">' + result["name"] + '</div>\n' +
+                            '                                            </div>\n' +
+                            '                                            <div class="comments__text">\n' + result["text"] +
+                            '                                            </div>\n' +
+                            '                                        </div>\n' +
+                            '                                    </div>'
+                        );
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="coctail__info">
+        <div class="container">
+            <div class="coctail__inner">
+                <div class="coctail__header">
+                    {% if user.id == object.author.id and user.is_authenticated %}
+                        <div class="cabinet__name">
+                            <label for="name" class="cabinet__name-label">Название</label>
+                            <input type="text" value="{{ object.name }}" style="background-color: darksalmon" required
+                                   name="name" id="cockt_name" class="cabinet__name-field"
+                                   v-model="cocktail.name">
+                        </div>
+                    {% else %}
+                        <div class="coctail__name">{{ object.name }}</div>
+                    {% endif %}
+                    <div class="statistika">
+                        <button type="submit" id="like_button" class="stat__like">
+                            <i class="far fa-heart stat__heart"></i>
+                            <div class="stat__text" href="">нравится</div>
+                            <div class="stat__count" id="count_likes">{{ likes }}</div>
+                        </button>
+                        <button id="favourite">
+                            <a href="#" class="stat__like">
+                                <i class="far fa-star stat__heart"></i>
+                                <div class="stat__text" href="">добавить в избранное</div>
+                            </a>
+                        </button>
+                        {% if user.id == object.author.id and user.is_authenticated %}
+                            <input id="cocktail_id" type="hidden" value="{{ object.id }}">
+                            <input id="user_id" type="hidden" value="{{ user.id }}">
+                            <button id="delete_cocktail">
+                                <a href="#" class="stat__like">
+                                    <i class="far fa-star stat__heart"></i>
+                                    <div class="stat__text" href="">Удалить</div>
+                                </a>
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="cocktail-bg">
+                    <img src="{{ object.img.url }}" alt="" class="cocktail-img">
+                </div>
+
+                <div class="cocktail__content">
+
+                    <span class="coctail__sostav">Состав коктейля <b class="helper">{{ object.name }}</b></span>
+
+                    <div class="coctail__block-photo">
+                        <div class="ingrid_cont">
+                            {% for ing in ingredients_list %}
+                                <a href="{% url 'ingredient_page' ing.ingredient.id %}" class="cocktail-ingredPhoto">
+                                    <img src="{{ ing.ingredient.small_img.url }}" alt="" class="coctail__block-img">
+                                </a>
+                            {% endfor %}
+                        </div>
+
+
+                        <div class="tools_cont">
+                            {% for tool in tools %}
+                                <a href="#" class="cocktail-ingredPhoto">
+                                    <img src="{{ tool.tool.small_img.url }}" alt="" class="coctail__block-img">
+                                </a>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+
+                    <div class="ing_table">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th colspan="3">
+                                    Необходимые ингридиенты
+                                </th>
+                            </tr>
+                            {% for ing in ingredients_list %}
+                                <tr>
+                                    <td class="">
+                                        <a>{{ ing.ingredient.name }}</a>
+                                    </td>
+                                    <td class="amount">
+                                        {{ ing.amount }}
+                                    </td>
+                                    <td class="measure">
+                                        {{ ing.measure }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th colspan="3">
+                                    Необходимые инструменты
+                                </th>
+                            </tr>
+                            {% for tool in tools %}
+                                <tr>
+                                    <td class="">
+                                        <a>{{ tool.tool.name }}</a>
+                                    </td>
+                                    <td class="amount">
+                                        {{ tool.amount }}
+                                    </td>
+                                    <td class="measure">
+                                        шт
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="recipe">
+                        <span class="recipe__title">Рецепт коктейля <b class="helper">{{ object.name }}</b></span>
+
+                        <div class="recipe__info">
+                            <div class="recipe__list">
+                                {% for key, value in recipe_text.items %}
+                                    <div class="recipe__list-item">
+                                        <div>{{ key }}</div>
+                                        <div class="recipe__list-name">{{ value }}</div>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+
+                            <div class="recipe__photo">
+                                <img src="{{ object.small_img.url }}" alt="" class="recipe__img">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="description">
+                        <span class="recipe__title">Описание коктейля <b class="helper">{{ object.name }}</b></span>
+
+                        {% if user.id == object.author.id and user.is_authenticated %}
+                            <div class="cabinet__info create__cabinet-info">
+                                <br>
+                                <textarea style="background-color: darksalmon" name="cocktail_info" required
+                                          id="cocktail_info"
+                                          placeholder="{{ object.description }}"
+                                          class="cabinet__text create__cabinet-text"
+                                          rows="10"></textarea>
+                            </div>
+                            <button id="sub_changes">Изменить.</button>
+                        {% else %}
+                            <div class="description__text">
+                                {{ object.description }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="comments">
+                <div class="comments__header">
+                    <div class="comments__title">Комментарии</div>
+                </div>
+
+                <div class="comments__inner">
+                    <div class="comments__block-text">
+                        {% if user.is_authenticated %}
+                            <form action="/" method="post" id="comment" class="send__comment">
+                                    <textarea class="text__comment" name="text" id="comment_text" rows="5"
+                                              placeholder="Оставьте ваш комментарий"></textarea>
+                                <div class="btn-comm">
+                                    <button type="button" id="comment_submit_button" class="comments__btn">Отправить
+                                    </button>
+                                </div>
+                            </form>
+                        {% else %}
+                            <div class="comments__text">Чтобы принять участие в диалоге, необходимо
+                                <a href="{% url 'auth' %}" class="color-helper">авторизоваться</a>.
+                            </div>
+                        {% endif %}
+
+                        <div class="comments__list">
+                            {% if comments %}
+                                {% for comment in comments %}
+                                    <div class="comments__list-item">
+                                        <div class="comments__avatar">
+                                            <img src="{{ comment.author.img.url }}" alt="" class="comments__avatar-img">
+                                        </div>
+                                        <div class="comments__info">
+                                            <div class="comment__head">
+                                                <div class="comments__name">{{ comment.author.name }}</div>
+                                            </div>
+                                            <div class="comments__text">
+                                                {{ comment.text }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}

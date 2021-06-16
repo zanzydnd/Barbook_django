@@ -1,0 +1,57 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="coctail__info">
+        <div class="container">
+            <div class="coctail__inner">
+                <div class="coctail__header">
+                    <div class="coctail__name">{{ object.name }}</div>
+                </div>
+
+
+                <div class="single-bg" style="width: 100%;
+                        height: 500px;
+                        background: rgb(255, 255, 255) url({{ object.img.url }}) 50% center no-repeat;
+                        background-size: auto 80%;
+
+                        border-bottom: 1px solid rgba(119, 119, 119, 0.5);">
+                </div>
+
+                <div class="single__about">
+                    {{ object.description }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="coctail__info">
+        <div class="container">
+            <div class="coctail__inner">
+                <div class="coctail__header single__header">
+                    <span class="coctail__name single__name">Коктейли с {{ object.name }}</span>
+                </div>
+
+                <div class="single__inner-items">
+                    {% for key,values in cocktails.items %}
+                        <div class="single__item">
+                            <a href="{% url 'cocktail_page' key.id %}" class="single__item-photo">
+                                <img src="{{ key.small_img.url }}" alt="" class="single__cocktail-img">
+                                <div class="single__cocktail-name">{{ key.name }}</div>
+                            </a>
+                            {% for ing in values %}
+                                <div class="single__content-ingredient">
+                                    <a href="{% url 'ingredient_page' ing.ingredient.id %}" class="single__ingredient-item">
+                                        <img src="{{ ing.ingredient.small_img.url }}" alt=""
+                                             class="single__ingred-img">
+                                        <div class="single__ingred-name">{{ ing.ingredient.name }}</div>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

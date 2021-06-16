@@ -1,0 +1,29 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+
+
+    <div class="coctail__info">
+        <div class="container">
+            <div class="coctail__inner">
+                <div class="coctail__header-new">
+                    <div class="coctail__name">Все бармены</div>
+                </div>
+                <div class="block__allbarmen">
+
+                    {% for object in object_list %}
+                        <a href="{% url 'cabinet' object.username %}" class="barmen__item">
+                            <div class="barmen__photo">
+                                <img src="{{ object.img.url }}" alt="" class="barmen__img">
+                            </div>
+                            <div class="barmen__name">{{ object.name }}</div>
+                            <div class="barmen__surname">{{ object.second_name }}</div>
+                            <div class="barmen__work">{{ object.role }}</div>
+                        </a>
+
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="barman_info">
+        <div class="container">
+            <div class="coctail__inner">
+                <div class="barman_info_inner">
+                    <div class="barman_name">
+                        <a class="name">{{ object.name }}</a>
+                        <a class="username">{{ object.username }}</a>
+                    </div>
+                    <div class="barman__block">
+                        <div class="avatar">
+                            <img class="avatar_img" src="{{ object.img.url }}">
+                        </div>
+                        <div class="barman_description">
+                            <div class="barman__description-item">
+                                <div class="barman__description-item--inner">
+                                    <div class="barman__description-title">
+                                        Тип:
+                                    </div>
+                                    <div class="barman__description-text">
+                                        {{ object.role }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="barman__description-item">
+                                <div class="barman__description-item--inner">
+                                    <div class="barman__description-title">
+                                        Тип:
+                                    </div>
+                                    <div class="barman__description-text">
+                                        Любитель
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="barman_info">
+        <div class="container">
+            <div class="coctail__inner">
+                <div class="barman_info_inner">
+                    <div class="barman_name carrier--line">
+                        <a class="name">Моя карьера</a>
+                    </div>
+                </div>
+
+                <div class="carrier__block">
+                    <div class="carrier__item">
+                        <div class="carrier__date">
+                            Продолжаю работать
+                        </div>
+                        <div class="carrier__content">
+                            <div class="carrier__text">Менеджер бара в Ambre, Краснодар, Россия</div>
+                        </div>
+                    </div>
+
+                    <div class="carrier__item">
+                        <div class="carrier__date">
+                            Продолжаю работать
+                        </div>
+                        <div class="carrier__content">
+                            <div class="carrier__text">Менеджер бара в Ambre, Краснодар, Россия</div>
+                        </div>
+                    </div>
+
+                    <div class="carrier__item">
+                        <div class="carrier__date">
+                            Продолжаю работать
+                        </div>
+                        <div class="carrier__content">
+                            <div class="carrier__text">Менеджер бара в Ambre, Краснодар, Россия</div>
+                        </div>
+                    </div>
+
+                    <div class="carrier__item">
+                        <div class="carrier__date">
+                            Продолжаю работать
+                        </div>
+                        <div class="carrier__content">
+                            <div class="carrier__text">Менеджер бара в Ambre, Краснодар, Россия</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="coctail__info">
+        <div class="container">
+            <div class="coctail__inner">
+                <div class="coctail__header single__header">
+                    <span class="coctail__name single__name">Любимые коктейли</span>
+                </div>
+
+                <div class="single__inner-items">
+                    {% for key,values in favourites.items %}
+                        <div class="single__item">
+                            <a href="{% url 'cocktail_page' key.id %}" class="single__item-photo">
+                                <img src="{{ key.small_img.url }}" alt="" class="single__cocktail-img">
+                                <div class="single__cocktail-name">{{ key.name }}</div>
+                            </a>
+                            {% for ing in values %}
+                                <div class="single__content-ingredient">
+                                    <a href="{% url 'ingredient_page' ing.ingredient.id %}" class="single__ingredient-item">
+                                        <img src="{{ ing.ingredient.small_img.url }}" alt=""
+                                             class="single__ingred-img">
+                                        <div class="single__ingred-name">{{ ing.ingredient.name }}</div>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

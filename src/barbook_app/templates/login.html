@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Sancreek&family=Tinos&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Registration</title>
+</head>
+<body>
+
+<div class="login">
+    <div class="login__container">
+
+        <h1 class="login__title">Авторизация</h1>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="group">
+                <label class="login__label" for="">Username</label>
+                <input class="login__input" type="text" name="username" required>
+            </div>
+
+            <div class="group">
+                <label class="login__label" for="">Password</label>
+                <input class="login__input" type="password" name="password" minlength="4" required>
+            </div>
+
+            <div class="group">
+                <button class="login__button" type="submit">Log in</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+</body>
+</html>

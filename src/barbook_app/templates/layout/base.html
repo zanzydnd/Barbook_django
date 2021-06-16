@@ -1,0 +1,131 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link href="https://fonts.googleapis.com/css2?family=Sancreek&family=Tinos&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@500&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Fira+Sans:wght@400;500&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sancreek&family=Tinos&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+
+    <script src="https://kit.fontawesome.com/fb732f956d.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+
+    <title>BarBook</title>
+
+    {% block script %}
+    {% endblock %}
+</head>
+<body>
+
+<header class="header">
+    <div class="container">
+        <div class="header__inner">
+            <div class="header__logo">
+                <font size="48" color="white" face="Sancreek">BB</font>
+            </div>
+            <nav class="nav">
+                <a class="nav__link" href="{% url 'main' %}">Home</a>
+                <a class="nav__link" href="{% url 'barmen' %}">Bartenders</a>
+                <a class="nav__link" href="{% url 'cocktails' %}">Cocktails</a>
+                <a class="nav__link" href="{% url 'contests' %}">Contests</a>
+                <a class="nav__link" href="{% url 'ingredients' %}">Ingredients</a>
+                {% if user.is_authenticated %}
+                    <a class="nav__link" href="{% url 'cabinet' user.username %}">{{ user.username }}</a>
+                {% else %}
+                    <a class="nav__link" href="{% url 'registration' %}">Registration</a>
+                {% endif %}
+            </nav>
+        </div>
+    </div>
+</header>
+{% block content %}
+{% endblock %}
+<footer class="footer_wrapper" id="contact">
+    <div class="container">
+        <section class="page_section contact" id="contact">
+            <div class="contact_section">
+                <h2>Get In Touch</h2>
+                <h6>Проблемы?</h6>
+
+            </div>
+            <div class="row">
+                <div class="col-lg-4 wow fadeInLeft">
+                    <div class="contact_info">
+                        <div class="detail">
+                            <h4>Albert</h4>
+                            <p>Pushkina, dom Kolotishkina</p>
+                        </div>
+                        <div class="detail">
+                            <h4>Позвони мне , позвони</h4>
+                            <p>8800553535</p>
+                        </div>
+                        <div class="detail">
+                            <h4>Хоть строчечку мне напиши</h4>
+                            <p>support@sitename.com</p>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-lg-8 wow fadeInLeft delay-06s">
+                    <!--NOTE: Update your email Id in "contact_me.php" file in order to receive emails from your contact form-->
+
+                    <form name="sentMessage" action="{% url 'help' %}" method="post" id="contactForm" novalidate>
+                       {% csrf_token %}
+                        <div class="control-group">
+                            <div class="controls">
+                                <input type="text" class="form-control"
+                                       name="author_name"
+                                       placeholder="Full Name" id="name" required
+                                       data-validation-required-message="Please enter your name"/>
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <input type="email" class="form-control" placeholder="Email"
+                                       id="email" required
+                                       name="author_email"
+                                       data-validation-required-message="Please enter your email"/>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <div class="controls">
+                <textarea rows="10" cols="100" name="message_text" class="form-control"
+                          placeholder="Message" id="message" required
+                          data-validation-required-message="Please enter your message" minlength="5"
+                          data-validation-minlength-message="Min 5 characters"
+                          maxlength="999" style="resize:none"></textarea>
+                            </div>
+                        </div>
+                        <div id="success"></div>
+                        <button type="submit" class="btn btn-primary pull-right">Send</button>
+                        <br/>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</footer>
+</body>
+</html>
