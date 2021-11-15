@@ -14,7 +14,7 @@ from barbook_app.models.stuff import (
     CocktailTool,
 )
 
-PATH_TO_DRIVER = ""
+PATH_TO_DRIVER = "/Users/dane4kq/PycharmProjects/Barbook_django/chromedriver"
 
 def get_ing_tags_and_classes():
     browser = webdriver.Chrome(PATH_TO_DRIVER)

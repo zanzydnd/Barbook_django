@@ -11,10 +11,10 @@ import uuid
 class BaseModel(models.Model):
     name = models.CharField(max_length=255, unique=True)
     small_img = models.ImageField(
-        upload_to="img_source\\small_img", null=True, blank=True
+        upload_to="small_img", null=True, blank=True
     )
     description = models.TextField()
-    img = models.ImageField(upload_to="img_source\\img", null=True, blank=True)
+    img = models.ImageField(upload_to="img", null=True, blank=True)
 
     def cacheImg(self, url):
         print(url)
