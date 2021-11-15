@@ -14,8 +14,7 @@ from barbook_app.models.stuff import (
     CocktailTool,
 )
 
-PATH_TO_DRIVER = "C:\\Users\\Даня\\PycharmProjects\\kozlov_itis_python2k_project_11900\\src\\barbook_app\\driver_chrome\\chromedriver.exe"
-
+PATH_TO_DRIVER = ""
 
 def get_ing_tags_and_classes():
     browser = webdriver.Chrome(PATH_TO_DRIVER)
@@ -300,15 +299,6 @@ def get_cocktails():
                     amount=int(m_and_a_for_tool[i][1]),
                 )
                 i += 1
-
-            #   print(cocktail_name)
-            # print(" " + str(ing_result))
-            # print("     " + str(m_and_a_for_ingredient))
-            # print("     " + str(m_and_a_for_tool))
-            # print("     " + str(tools_result))
-            # print(tags)
-            # print(steps)
-            # print(about)
             new_browser.close()
             i += 1
             count += 1

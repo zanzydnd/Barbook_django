@@ -16,12 +16,10 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-RUN black src --check --diff
-
 EXPOSE 8000
 
 COPY --from=node /app/src/barbook_app/static /app/src/barbook_app/static
 
 RUN python src/manage.py collectstatic --noinput
 
-CMD python -m spacy download en && python src/manage.py makemigrations && python src/manage.py migrate && gunicorn barbook_project.wsgi --chdir src --bind 0.0.0.0 --preload --log-file -
+CMD python3 -m spacy download en && python3 src/manage.py makemigrations && python3 src/manage.py migrate && python3 src/manage.py && gunicorn barbook_project.wsgi --chdir src --bind 0.0.0.0 --preload --log-file -

@@ -27,7 +27,7 @@ SECRET_KEY = "!9uphom7i*e6w=qb1gwda4g)@1i+t9i+la%7v2&tr6l$r&#9zw"
 DEBUG = True
 
 #"localhost", "127.0.0.1", "app", "185.251.88.82"
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "app", "185.251.88.82"]
 
 # Application definition
 
@@ -96,13 +96,13 @@ DATABASES = {
     "default": {
         #django.db.backends.mysql
         #django.db.backends.postgresql_psycopg2
-        "ENGINE": "django.db.backends.mysql",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": os.environ.get("DB_NAME", "barbook_django"),
         "USER": os.environ.get("DB_USER", "root"),
         "PASSWORD": os.environ.get("DB_PASSWORD", "root"),
         "HOST": os.environ.get("DB_HOST", "127.0.0.1"),
         #5432
-        "PORT": os.environ.get("DB_PORT", "3306"),
+        "PORT": os.environ.get("DB_PORT", "5432"),
     }
 }
 
@@ -172,10 +172,10 @@ REDIS_CONNECTION = os.environ.get("REDIS_CONNECTION", "redis://localhost:6379/0"
 
 CELERY_BROKER_URL = REDIS_CONNECTION
 
-CELERY_BEAT_SCHEDULE = {
-    "import_cocktails": {
-        "task": "barbook_app.tasks.cocktails_validate",
-        "schedule": crontab(minute="*/2"),
-        "args": (),
-    },
-}
+# CELERY_BEAT_SCHEDULE = {
+#     "import_cocktails": {
+#         "task": "barbook_app.tasks.cocktails_validate",
+#         "schedule": crontab(minute="*/2"),
+#         "args": (),
+#     },
+# }
