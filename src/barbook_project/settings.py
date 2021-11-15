@@ -152,7 +152,8 @@ MEDIA_ROOT = "img_source"
 # /barbook_app
 
 STATIC_URL = "/static/"
-STATIC_ROOT = "/static"
+STATIC_ROOT = "static"
+
 
 AUTH_USER_MODEL = "barbook_app.BarbookUser"
 

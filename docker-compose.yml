@@ -35,7 +35,7 @@ services:
       REDIS_CONNECTION: redis://redis:6379/0
     volumes:
       - static:/app/static
-
+      - loaded:/app/img_source
   celery:
     <<: *app
     working_dir: /app/src
@@ -60,3 +60,4 @@ services:
 volumes:
   db:
   static:
+  loaded:
