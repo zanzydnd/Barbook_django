@@ -100,7 +100,7 @@ DATABASES = {
         "NAME": os.environ.get("DB_NAME", "barbook_django"),
         "USER": os.environ.get("DB_USER", "root"),
         "PASSWORD": os.environ.get("DB_PASSWORD", "root"),
-        "HOST": os.environ.get("DB_HOST", "127.0.0.1"),
+        "HOST": os.environ.get("DB_HOST", "176.119.147.94"),
         #5432
         "PORT": os.environ.get("DB_PORT", "5432"),
     }

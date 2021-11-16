@@ -18,9 +18,6 @@ COPY . .
 
 EXPOSE 8000
 
-COPY  img_source/ /app/
-RUN ls -la /app/img_source/
-
 COPY --from=node /app/src/barbook_app/static /app/src/barbook_app/static
 
 RUN python src/manage.py collectstatic --noinput
