@@ -43,7 +43,9 @@ def get_cocktail_prepared(cocktail: Cocktail):
     cocktail_recipe = cocktail.recipe_text
     cocktail_ingredients = CocktailRecipe.objects.filter(
         cocktail=cocktail
-    ).select_related("ingredient")
+    ).select_related(""
+                     ""
+                     "ingredient")
     cocktail_tools = CocktailTool.objects.filter(cocktail=cocktail).select_related(
         "tool"
     )
