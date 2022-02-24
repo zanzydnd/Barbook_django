@@ -1,3 +1,6 @@
+# Доработка в рамках курса 
+https://github.com/42praktika/DevOps-Course
+
 # BarBook
 
 Запуск:
