@@ -21,10 +21,9 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - uses: actions/checkout@v2
       - name: Build Docker Python Image
-        uses: actions/checkout@v2
         run: docker image build . --file deploy/python/Dockerfile --tag barbook:latest
 
       - name: Push Docker Python Image
-        uses: actions/checkout@v2
         run: docker image push barbook:latest
