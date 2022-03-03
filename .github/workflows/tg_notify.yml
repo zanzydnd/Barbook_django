@@ -12,8 +12,8 @@ jobs:
       - name: PushNotify
         uses: appleboy/telegram-action@master
         with:
-          token: ${{BarBookEnv.TELEGRAM_BOT_TOKEN}}
-          to: ${{ BarBookEnv.CHAT_ID }}
+          token: ${{secrets.TELEGRAM_BOT_TOKEN}}
+          to: ${{ secrets.CHAT_ID }}
           message: |
             ${{ github.actor }} just pushed ${{ github.ref }} into ${{ github.repository }} with comment "${{ github.event.head_commit.message }}"
             ${{ github.event.compare }}
