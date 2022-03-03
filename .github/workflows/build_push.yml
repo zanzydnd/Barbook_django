@@ -23,7 +23,7 @@ jobs:
 
       - uses: actions/checkout@v2
       - name: Build Docker Python Image
-        run: docker image build . --file deploy/python/Dockerfile --tag barbook:latest
+        run: docker image build . --file deploy/python/Dockerfile --tag dane4kq/barbook:latest
 
       - name: Push Docker Python Image
-        run: docker image push barbook:latest
+        run: docker image push dane4kq/barbook:latest
