@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubunt-latest
+    runs-on: ubuntu-latest
     steps:
       - name: SetUp QEMU
         uses: docker/setup-qemu-action@v1
