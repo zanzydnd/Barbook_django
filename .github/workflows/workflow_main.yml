@@ -16,7 +16,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Pull
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
       - name: Set up python 3.8
         uses: actions/setup-python@v2
         with:
