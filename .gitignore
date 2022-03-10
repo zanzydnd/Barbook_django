@@ -61,6 +61,7 @@ chromedriver
 htmlcov/
 .tox/
 .nox/
+trash
 .coverage
 .coverage.*
 .cache
