@@ -43,23 +43,30 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Pull
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - name: Set up python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+        - name: Install Dependencies
+          run: |
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
+        - name: SetUp QEMU
+          uses: docker/setup-qemu-action@v1
 
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+        - name: Set up Docker buildx
+          uses: docker/setup-buildx-action@v1
 
-      - name: Run docker database
-        run: docker-compose -f docker-compose.db.yml up --build -d
+        - name: Run docker database
+          run: docker-compose -f docker-compose.db.yml up --build -d
 
-      - name: Run django api Tests
-        run: python src/manage.py test barbook_api
+        - name: Run django api Tests
+          run: python src/manage.py test barbook_api
 
-      - name: Run django app Tests
-        run: |
-          python src/manage.py test barbook_app
+        - name: Run django app Tests
+          run: |
+            python src/manage.py test barbook_app
 
   notify:
     needs: tests
