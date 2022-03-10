@@ -2,7 +2,7 @@ name: TelegramNotification
 
 on:
   workflow_run:
-    workflows: [ "Build Main", "Run unittests" ]
+    workflows: [ "Run unittests" ]
     branches: [ main ]
     types:
       - completed
