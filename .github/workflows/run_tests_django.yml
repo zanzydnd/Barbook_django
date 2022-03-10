@@ -1,0 +1,45 @@
+name: "Run unittests"
+
+on:
+  push:
+    branches:
+      - "main"
+  workflow_run:
+    workflows: [ "Build Main" ]
+    branches: [ main ]
+    types:
+      - completed
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [ 3.6, 3.7, 3.8 ]
+
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up python ${{matrix.python-version}}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: SetUp QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Run docker database
+        run: docker-compose -f docker-compose.db.yml --build -d
+
+      - name: Run django api Tests
+        run: python src/manage.py test barbook_api
+
+      - name: Run django app Tests
+        run: |
+          python src/manage.py test barbook_app

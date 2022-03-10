@@ -1,0 +1,16 @@
+name: "Deploy main"
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: " Pull repository"
+        uses: actions/checkout@v2
+      - run: docker-compose stop
+      - run: docker-compose rm -f
+      - run: docker-compose up -d --build

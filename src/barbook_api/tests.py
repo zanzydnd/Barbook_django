@@ -183,30 +183,30 @@ class ApiTests(APITestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_create_cocktail(self):
-        user = BarbookUser.objects.get(id=1)
-        self.client.force_login(user=user)
-
-        image = io.BytesIO()
-        Image.new("RGB", (150, 150)).save(image, "JPEG")
-        image.seek(0)
-        file_uploaded = SimpleUploadedFile("image.jpg", image.getvalue())
-        file_uploaded2 = SimpleUploadedFile("image.jpg", image.getvalue())
-        data = {
-            "author": "1",
-            "name": "success_test",
-            "description": "description_success_test",
-            "recipe_text": '{"1": "asd", "2": "asd"}',
-            "recipe[0]ingredient": "1",
-            "recipe[0]amount": "1",
-            "recipe[1]ingredient": "2",
-            "recipe[1]amount": "2",
-            "cocktail_tool[0]tool": "1",
-            "cocktail_tool[0]amount": "1",
-            "cocktail_tool[1]tool": "2",
-            "cocktail_tool[1]amount": "2",
-            "img": file_uploaded,
-            "small_img": file_uploaded2,
-        }
-        response = self.client.post(reverse("cocktail_create"), data=data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    # def test_create_cocktail(self):
+    #     user = BarbookUser.objects.get(id=1)
+    #     self.client.force_login(user=user)
+    #
+    #     image = io.BytesIO()
+    #     Image.new("RGB", (150, 150)).save(image, "JPEG")
+    #     image.seek(0)
+    #     file_uploaded = SimpleUploadedFile("image.jpg", image.getvalue())
+    #     file_uploaded2 = SimpleUploadedFile("image.jpg", image.getvalue())
+    #     data = {
+    #         "author": "1",
+    #         "name": "success_test",
+    #         "description": "description_success_test",
+    #         "recipe_text": '{"1": "asd", "2": "asd"}',
+    #         "recipe[0]ingredient": "1",
+    #         "recipe[0]amount": "1",
+    #         "recipe[1]ingredient": "2",
+    #         "recipe[1]amount": "2",
+    #         "cocktail_tool[0]tool": "1",
+    #         "cocktail_tool[0]amount": "1",
+    #         "cocktail_tool[1]tool": "2",
+    #         "cocktail_tool[1]amount": "2",
+    #         "img": file_uploaded,
+    #         "small_img": file_uploaded2,
+    #     }
+    #     response = self.client.post(reverse("cocktail_create"), data=data)
+    #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
