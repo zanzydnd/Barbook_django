@@ -60,7 +60,10 @@ jobs:
 
       - name: Run docker database
         run: docker-compose -f docker-compose.db.yml up --build -d
-
+      - name: Wait / Sleep
+        uses: jakejarvis/wait-action@v0.1.1
+        with:
+          time: '10s'
       - name: Run django api Tests
         run: python src/manage.py test barbook_api
 
