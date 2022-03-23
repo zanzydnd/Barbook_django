@@ -42,8 +42,8 @@ scrape_configs:
   static_configs:
   - targets:
       - localhost
-      labels:
-        job: nginx_access_log
-        host: appfelstrudel
-        agent: promtail
-        __path__: /var/log/nginx/*access.log
+    labels:
+      job: nginx_access_log
+      host: appfelstrudel
+      agent: promtail
+      __path__: /var/log/nginx/*access.log
