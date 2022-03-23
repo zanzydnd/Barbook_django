@@ -22,12 +22,9 @@ services:
       DB_PORT: 5432
       REDIS_CONNECTION: redis://redis:6379/0
     volumes:
-      - static:/app/static
-      - ./img_source:/app/img_source
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}"
+      - ./:/app
+
+
   celery:
     <<: *app
     working_dir: /app/src
