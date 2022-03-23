@@ -64,3 +64,4 @@ services:
 
 volumes:
   db:
+  promtail-data:
