@@ -34,16 +34,3 @@ scrape_configs:
                 body_bytes_sent:
                 http_referer:
                 http_user_agent:
-  - job_name: system
-    pipeline_stages:
-    - replace:
-        expression: '(?:[0-9]{1,3}\.){3}([0-9]{1,3})'
-        replace: '***'
-    static_configs:
-    - targets:
-       - localhost
-      labels:
-        job: nginx_access_log
-        host: appfelstrudel
-        agent: promtail
-        __path__: /var/log/nginx/*access.log
