@@ -10,40 +10,40 @@ client:
 
 
 scrape_configs:
-- job_name: nginx
-  static_configs:
-  - targets:
-      - localhost
-    labels:
-      job: nginxlogs
-      __path__: /var/log/nginx/*log
-  pipeline_stages:
-    - match:
-        selector: '{job="nginxlogs"}'
-        stages:
-          - regex:
-              expression: '^(?P<remote_addr>[\w\.]+) - (?P<remote_user>[^ ]*) \[(?P<time_local>.*)\] "(?P<method>[^ ]*) (?P<request>[^ ]*) (?P<protocol>[^ ]*)" (?P<status>[\d]+) (?P<body_bytes_sent>[\d]+) "(?P<http_referer>[^"]*)" "(?P<http_user_agent>[^"]*)"?'
-          - labels:
-              remote_addr:
-              remote_user:
-              time_local:
-              method:
-              request:
-              protocol:
-              status:
-              body_bytes_sent:
-              http_referer:
-              http_user_agent:
-- job_name: system
-  pipeline_stages:
-  - replace:
-      expression: '(?:[0-9]{1,3}\.){3}([0-9]{1,3})'
-      replace: '***'
-  static_configs:
-  - targets:
-      - localhost
-    labels:
-      job: nginx_access_log
-      host: appfelstrudel
-      agent: promtail
-      __path__: /var/log/nginx/*access.log
+  - job_name: nginx
+    static_configs:
+    - targets:
+        - localhost
+      labels:
+        job: nginxlogs
+        __path__: /var/log/nginx/*log
+    pipeline_stages:
+      - match:
+          selector: '{job="nginxlogs"}'
+          stages:
+            - regex:
+                expression: '^(?P<remote_addr>[\w\.]+) - (?P<remote_user>[^ ]*) \[(?P<time_local>.*)\] "(?P<method>[^ ]*) (?P<request>[^ ]*) (?P<protocol>[^ ]*)" (?P<status>[\d]+) (?P<body_bytes_sent>[\d]+) "(?P<http_referer>[^"]*)" "(?P<http_user_agent>[^"]*)"?'
+            - labels:
+                remote_addr:
+                remote_user:
+                time_local:
+                method:
+                request:
+                protocol:
+                status:
+                body_bytes_sent:
+                http_referer:
+                http_user_agent:
+  - job_name: system
+    pipeline_stages:
+    - replace:
+        expression: '(?:[0-9]{1,3}\.){3}([0-9]{1,3})'
+        replace: '***'
+    static_configs:
+    - targets:
+       - localhost
+      labels:
+        job: nginx_access_log
+        host: appfelstrudel
+        agent: promtail
+        __path__: /var/log/nginx/*access.log
