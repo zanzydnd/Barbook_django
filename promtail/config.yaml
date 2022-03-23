@@ -8,11 +8,29 @@ positions:
 client:
   url: https://181588:eyJrIjoiYjc1ZDVlMGE2YTE1NTk2MDY0NjI0NTllYzdjMzg0ZWE4MzQ3NWU5MiIsIm4iOiJMT0tJX0FQSV9LRVkiLCJpZCI6NjE3NjA5fQ==@logs-prod-eu-west-0.grafana.net/api/prom/push
 
+
 scrape_configs:
-- job_name: system
+- job_name: nginx
   static_configs:
   - targets:
       - localhost
     labels:
-      job: varlogs
-      __path__: /var/log/*.log
+      job: nginxlogs
+      __path__: /var/log/nginx/*log
+  pipline_stages:
+    - match:
+        selector: '{job="nginxlogs"}'
+        stages:
+          - regex:
+              expression: '^(?P<remote_addr>[\w\.]+) - (?P<remote_user>[^ ]*) \[(?P<time_local>.*)\] "(?P<method>[^ ]*) (?P<request>[^ ]*) (?P<protocol>[^ ]*)" (?P<status>[\d]+) (?P<body_bytes_sent>[\d]+) "(?P<http_referer>[^"]*)" "(?P<http_user_agent>[^"]*)"?'
+          - labels:
+              remote_addr:
+              remote_user:
+              time_local:
+              method:
+              request:
+              protocol:
+              status:
+              body_bytes_sent:
+              http_referer:
+              http_user_agent:
