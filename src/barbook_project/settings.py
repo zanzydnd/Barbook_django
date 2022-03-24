@@ -63,6 +63,8 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     'http://dane4kq.ru',
     'http://www.dane4kq.ru',
+    'https://dane4kq.ru',
+    'https://www.dane4kq.ru',
 ]
 
 ROOT_URLCONF = "barbook_project.urls"
