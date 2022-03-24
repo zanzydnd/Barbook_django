@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_windows_tools",
+    'corsheaders',
     "barbook_app",
     "rest_framework",
     "drf_yasg",
@@ -50,12 +51,18 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "silk.middleware.SilkyMiddleware",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://dane4kq.ru',
+    'http://www.dane4kq.ru',
 ]
 
 ROOT_URLCONF = "barbook_project.urls"
