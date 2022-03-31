@@ -88,9 +88,6 @@ jobs:
       - name: Start container
         run: docker-compose up --build -d
 
-      - name: Collect static
-        run: docker-compose exec app python src/manage.py collectstatic --noinput
-
   notify:
     needs: deployment
     runs-on: ubuntu-latest
