@@ -92,7 +92,7 @@ jobs:
         run: docker-compose exec app python src/manage.py collectstatic --noinput
 
   notify:
-    needs: tests
+    needs: deployment
     runs-on: ubuntu-latest
     steps:
       - name: PushNotify
