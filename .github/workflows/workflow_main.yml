@@ -79,6 +79,12 @@ jobs:
       - name: Make pull
         uses: actions/checkout@v2
 
+      - name: SetUp QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker buildx
+        uses: docker/setup-buildx-action@v1
+
       - name: Stop containers
         run: docker-compose stop
 
