@@ -26,7 +26,7 @@ SECRET_KEY = "!9uphom7i*e6w=qb1gwda4g)@1i+t9i+la%7v2&tr6l$r&#9zw"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#"localhost", "127.0.0.1", "app", "185.251.88.82"
+# "localhost", "127.0.0.1", "app", "185.251.88.82"
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "app", "185.251.88.82"]
 
 # Application definition
@@ -65,6 +65,11 @@ CORS_ALLOWED_ORIGINS = [
     'http://www.dane4kq.ru',
     'https://dane4kq.ru',
     'https://www.dane4kq.ru',
+    'https://barbook.dane4kq.ru',
+    'http://barbook.dane4kq.ru',
+    'http://www.barbook.dane4kq.ru',
+    'https://www.barbook.dane4kq.ru',
+
 ]
 
 ROOT_URLCONF = "barbook_project.urls"
@@ -103,8 +108,8 @@ WSGI_APPLICATION = "barbook_project.wsgi.application"
 
 DATABASES = {
     "default": {
-        #django.db.backends.mysql
-        #django.db.backends.postgresql_psycopg2
+        # django.db.backends.mysql
+        # django.db.backends.postgresql_psycopg2
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": os.environ.get("DB_NAME", "barbook_django"),
         "USER": os.environ.get("DB_USER", "root"),
@@ -161,7 +166,6 @@ MEDIA_ROOT = "img_source"
 
 STATIC_URL = "/static/"
 STATIC_ROOT = "static"
-
 
 AUTH_USER_MODEL = "barbook_app.BarbookUser"
 
