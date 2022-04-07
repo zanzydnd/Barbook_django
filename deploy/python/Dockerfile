@@ -22,5 +22,5 @@ COPY --from=node /app/src/barbook_app/static /app/src/barbook_app/static
 
 RUN python src/manage.py collectstatic --noinput
 
-CMD python3 -m spacy download en && python3 src/manage.py migrate && python3 src/manage.py initadmin && \
+CMD python3 src/manage.py migrate && python3 src/manage.py initadmin && \
  gunicorn barbook_project.wsgi --chdir src --bind 0.0.0.0 --preload --log-file -
