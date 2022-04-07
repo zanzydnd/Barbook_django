@@ -76,6 +76,9 @@ jobs:
     runs-on: self-hosted
     needs: tests
     steps:
+      - name: Rm pycache
+        run: find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
+
       - name: Make pull
         uses: actions/checkout@v2
 
