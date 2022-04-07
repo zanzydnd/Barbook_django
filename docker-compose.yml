@@ -7,6 +7,7 @@ services:
       context: .
       dockerfile: deploy/python/Dockerfile
     restart: always
+    user: ${CURRENT_UID}
     ports:
       - 8000:8000
     expose:
