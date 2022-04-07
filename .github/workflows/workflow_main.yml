@@ -86,7 +86,7 @@ jobs:
         run: docker-compose rm -f
 
       - name: Start container
-        run: docker-compose up --build -d
+        run: CURRENT_UID=$(id -u):$(id -g) docker-compose up --build -d
 
   notify:
     needs: deployment
