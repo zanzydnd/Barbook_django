@@ -27,7 +27,7 @@ SECRET_KEY = "!9uphom7i*e6w=qb1gwda4g)@1i+t9i+la%7v2&tr6l$r&#9zw"
 DEBUG = True
 
 # "localhost", "127.0.0.1", "app", "185.251.88.82"
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "app", "185.251.88.82"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "app", "185.251.88.82", "176.119.147.94", "api.ipify.org"]
 
 # Application definition
 
