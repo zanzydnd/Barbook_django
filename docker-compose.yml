@@ -34,15 +34,15 @@ services:
     ports: [ ]
     volumes: [ ]
 
-  promtail:
-    image: grafana/promtail:1.4.1
-    volumes:
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-      - promtail-data:/var/lib/promtail/positions
-      - ./promtail/promtail.yaml:/etc/promtail/promtail.yml
-      - /var/log/nginx/:/var/log/nginx/
-    command:
-      - '-config.file=/etc/promtail/promtail.yml'
+#  promtail:
+#    image: grafana/promtail:1.4.1
+#    volumes:
+#      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+#      - promtail-data:/var/lib/promtail/positions
+#      - ./promtail/promtail.yaml:/etc/promtail/promtail.yml
+#      - /var/log/nginx/:/var/log/nginx/
+#    command:
+#      - '-config.file=/etc/promtail/promtail.yml'
 
 
   postgres:
