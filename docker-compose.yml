@@ -24,7 +24,7 @@ services:
       REDIS_CONNECTION: redis://redis:6379/0
     volumes:
       - ./:/app
-
+      - /home/barbook/img_source:/app/img_source
 
   celery:
     <<: *app
@@ -50,8 +50,6 @@ services:
       POSTGRES_DB: barbook_django
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
-    ports:
-      - "5433:5432"
     volumes:
       - db:/var/lib/postgresql/data
     logging:
